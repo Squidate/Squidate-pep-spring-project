@@ -65,29 +65,32 @@ public ResponseEntity<List<Message>> getAllMessages(){
 return ResponseEntity.ok(messageService.getAllMessages());
 }
 
-@GetMapping("/message/{id}")
+@GetMapping("/messages/{id}")
 public ResponseEntity<?> getMessageById(@PathVariable("id") int id){
     Message message = messageService.getMessageById(id);
+    if (message == null){
+        return ResponseEntity.notFound().build();
+    }
     return ResponseEntity.ok(message);
 }
 
-@DeleteMapping("/message/{id}")
+@DeleteMapping("/messages/{id}")
 public ResponseEntity<?> deleteMessage(@PathVariable("id") int id){
     int rowDeleted = messageService.deleteMessage(id);
     if (rowDeleted == 0){
-        return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
     }
     return ResponseEntity.ok(rowDeleted);
 }
 
-@PatchMapping("/message/{id}")
+@PatchMapping("/messages/{id}")
 public ResponseEntity<?> updateMessage(@PathVariable("id") int id, @RequestBody Message update){
  if (update.getMessageText() == null || update.getMessageText().isBlank() || update.getMessageText().length() > 255){
     return ResponseEntity.badRequest().build();
  }
  int rowUpdate = messageService.updateMessage(id, update.getMessageText());
  if (rowUpdate == 0){
-    return ResponseEntity.badRequest().build();
+    return ResponseEntity.notFound().build();
  }
  return ResponseEntity.ok(rowUpdate);
 }
