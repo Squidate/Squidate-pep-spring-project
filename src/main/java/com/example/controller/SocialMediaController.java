@@ -70,7 +70,7 @@ return ResponseEntity.ok(messageService.getAllMessages());
 public ResponseEntity<?> getMessageById(@PathVariable("id") int id){
     Message message = messageService.getMessageById(id);
     if (message == null){
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body("");
     }
     return ResponseEntity.ok(message);
 }
@@ -79,7 +79,7 @@ public ResponseEntity<?> getMessageById(@PathVariable("id") int id){
 public ResponseEntity<?> deleteMessage(@PathVariable("id") int id){
     int rowDeleted = messageService.deleteMessage(id);
     if (rowDeleted == 0){
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body("");
     }
     return ResponseEntity.ok(rowDeleted);
 }
