@@ -5,6 +5,7 @@ import com.example.entity.Message;
 import com.example.service.AccountService;
 import com.example.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -34,7 +35,7 @@ if (account.getUsername() == null || account.getUsername().isBlank() || account.
 }
 Account created = accountService.register(account);
 if (created == null){
-    return ResponseEntity.status(409).build();
+    return ResponseEntity.status(HttpStatus.CONFLICT).build();
 }
 return ResponseEntity.ok(created);
 }
