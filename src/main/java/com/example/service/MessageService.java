@@ -1,5 +1,6 @@
 package com.example.service;
 import com.example.entity.Message;
+import com.example.repository.AccountRepository;
 import com.example.repository.MessageRepository;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +13,13 @@ public class MessageService {
 
 @Autowired
 private MessageRepository messageRepository;
-
-public Message messages(Message message) {
-return messageRepository.save(message);
-}
+@Autowired
+private AccountRepository accountRepository;
 
 public Message createMessage(Message message) {
+if (!accountRepository.existsById(message.getPostedBy())) {
+        return null;
+    }
 return messageRepository.save(message);
 }
 
@@ -26,11 +28,16 @@ public List<Message> getAllMessages(){
 }
 
 public Message getMessageById(int id){
-    return messageRepository.findById(id);
+    return messageRepository.findById(id).orElse(null);
 }
 
 public int deleteMessage(int id){
-    return messageRepository.deleteById(id);
+    if (messageRepository.existsById(id)){
+        messageRepository.deleteById(id);
+        return 1;
+    }
+
+    return 0;
 }
 
 public List<Message> getMessagesByUser(int accountId){
@@ -38,7 +45,12 @@ public List<Message> getMessagesByUser(int accountId){
 }
 
 public int updateMessage(int id, String newText){
-    return messageRepository.updateTextMessage(id, newText);
+    return messageRepository.findById(id).map(msg -> {
+                msg.setMessageText(newText);
+                messageRepository.save(msg);
+                return 1;
+            })
+            .orElse(0);
 }
 
 }

@@ -9,9 +9,9 @@ public class AccountService {
 
     @Autowired
     AccountRepository accountRepository;
-    
+
    public Account register(Account account){
-    Account exists = accountRepository.findByUserName(account.getUsername());
+    Account exists = accountRepository.findByUsername(account.getUsername());
     if (exists != null){
         return null;
     }
@@ -20,7 +20,7 @@ public class AccountService {
 }
 
     public Account login(Account account){
-        Account exists = accountRepository.findByUserName(account.getUsername());
+        Account exists = accountRepository.findByUsername(account.getUsername());
         if (exists != null && exists.getPassword().equals(account.getPassword())){
             return exists;
         }
