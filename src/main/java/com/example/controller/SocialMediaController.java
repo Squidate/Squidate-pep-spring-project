@@ -100,4 +100,4 @@ public ResponseEntity<?> updateMessage(@PathVariable("id") int id, @RequestBody 
 public ResponseEntity<?> getMessagesByAccountId(@PathVariable("accountId") int accountId){
     return ResponseEntity.ok(messageService.getMessagesByUser(accountId));
 }
-}
+}   
