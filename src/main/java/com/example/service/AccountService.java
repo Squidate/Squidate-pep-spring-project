@@ -1,8 +1,27 @@
 package com.example.service;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.example.entity.Account;
+import com.example.repository.AccountRepository;
 
 public class AccountService {
-   public Account register(Account account) {return account;}
-    public Account login(Account account) {return account;}
+    @Autowired
+    AccountRepository accountRepository;
+   public Account register(Account account){
+    Account exists = accountRepository.findByUserName(account.getUsername());
+    if (exists != null){
+        return null;
+    }
+
+    return accountRepository.save(account);
+}
+
+    public Account login(Account account){
+        Account exists = accountRepository.findByUserName(account.getUsername());
+        if (exists != null && exists.getPassword().equals(account.getPassword())){
+            return exists;
+        }
+        return null;
+    }
 
 }
