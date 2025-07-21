@@ -91,7 +91,7 @@ public ResponseEntity<?> updateMessage(@PathVariable("id") int id, @RequestBody 
  }
  int rowUpdate = messageService.updateMessage(id, update.getMessageText());
  if (rowUpdate == 0){
-    return ResponseEntity.notFound().build();
+    return ResponseEntity.badRequest().build();
  }
  return ResponseEntity.ok(rowUpdate);
 }
